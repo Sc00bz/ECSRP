@@ -296,11 +296,11 @@ function compareStr($a, $b)
 function clientStep1($bxP_xQ_x, $bxP_xQ_y, $password, $salt, $hardness)
 {
 	// aP
-	// x(b(1/x)P+(1/x)Q) - Q + P = (b+1)P
-	// hash((b+1)P || a(b+1)P)
+	// x(b(1/x)P+(1/x)Q) - Q = bP
+	// hash(bP || abP)
 
 	// $a_priKey*P = $aP_pubKey
-	// x*($bxP_xQ_x,$bxP_xQ_y) - Q + P = $bP_x
+	// x*($bxP_xQ_x,$bxP_xQ_y) - Q = $bP_x
 	// hash($bP_x || $a_priKey*$bP_x)
 
 	global $p25519;
@@ -329,8 +329,6 @@ function clientStep1($bxP_xQ_x, $bxP_xQ_y, $password, $salt, $hardness)
 	list($tmpX, $tmpY) = curve25519EcdhOutXY($x, $bxP_xQ_x, $bxP_xQ_y);
 	// (bP + Q) - Q = bP
 	list($tmpX, $tmpY) = curve25519AddOutXY($tmpX, $tmpY, 0x10, gmp_sub($p25519, gmp_init('36b20194b9ee7885e888642d2006d60cdcc836d17f615e8416989556b3941598', 16)));
-	// (bP) + P = (b+1)P
-	list($tmpX, $tmpY) = curve25519AddOutXY($tmpX, $tmpY, 0x9, gmp_init('20ae19a1b8a086b4e01edd2c7748d14c923d4d7e6d7c61b229e9c5a27eced3d9', 16));
 	$bP_x  = gmp_strval($tmpX, 16);
 	$abP_x = curve25519Ecdh($a_priKey, $bP_x);
 
@@ -342,7 +340,7 @@ function clientStep1($bxP_xQ_x, $bxP_xQ_y, $password, $salt, $hardness)
 
 function clientStep2($aP_pubKey, $bPx_abPx, $hash_aPx_bPx_abPx)
 {
-	// hash(aP || (b+1)P || a(b+1)P) == $hash_aPx_bPx_abPx
+	// hash(aP || bP || abP) == $hash_aPx_bPx_abPx
 	// hash($aP_pubKey || $bPx_abPx) == $hash_aPx_bPx_abPx
 
 	$aP_pubKey  = str_repeat('0', 64 - strlen($aP_pubKey)) . $aP_pubKey;
@@ -381,15 +379,12 @@ function serverStep1($xP_x, $xP_y, $xQ_x, $xQ_y)
 
 function serverStep2($b_priKey, $aP_pubKey, $hash_bPx_abPx)
 {
-	// hash((b+1)P || a(b+1)P) == $hash_bPx_abPx
-	// hash(($b_priKey+1)P || ($b_priKey+1)*$aP_pubKey) == $hash_bPx_abPx
+	// hash(bP || abP) == $hash_bPx_abPx
+	// hash($b_priKey*P || $b_priKey*$aP_pubKey) == $hash_bPx_abPx
 
-	// b_priKey = b+1
-	$b_priKey = gmp_add($b_priKey, 1);
-
-	// (b+1)P
+	// bP
 	$bP_x = curve25519Ecdh($b_priKey);
-	// (b+1)(aP)
+	// b(aP)
 	$abP_x = curve25519Ecdh($b_priKey, $aP_pubKey);
 
 	$bP_x  = gmp_strval($bP_x, 16);
@@ -426,10 +421,10 @@ echo "bxP + xQ = ($bxP_xQ_x, $bxP_xQ_y)\n\n";
 // *** Client ***
 list($bPx_abPx, $aP_pubKey, $hash_bPx_abPx) = clientStep1($bxP_xQ_x, $bxP_xQ_y, 'password', $salt, $hardness);
 echo "*** Client ***\n";
-echo "X(aP)                      = $aP_pubKey\n";
-echo "  X((b+1)P)                = " . substr($bPx_abPx, 0, 64) . "\n";
-echo "               X(a(b+1)P)  = " . substr($bPx_abPx, 64) . "\n";
-echo "H(X((b+1)P) || X(a(b+1)P)) = $hash_bPx_abPx\n\n";
+echo "X(aP)                 = $aP_pubKey\n";
+echo "  X(bP)               = " . substr($bPx_abPx, 0, 64) . "\n";
+echo "               X(abP) = " . substr($bPx_abPx, 64) . "\n";
+echo "H(X(bP) || X(abP))    = $hash_bPx_abPx\n\n";
 // *** C->S: $aP_pubKey, $hash_bPx_abPx ***
 
 // *** Server ***
@@ -439,7 +434,7 @@ if ($hash_aPx_bPx_abPx === false)
 	die("*** Server ***\nBye client (bad password)");
 }
 echo "*** Server ***\n";
-echo "H(X(aP) || X((b+1)P) || X(a(b+1)P)) = $hash_aPx_bPx_abPx\n\n";
+echo "H(X(aP) || X(bP) || X(abP)) = $hash_aPx_bPx_abPx\n\n";
 // *** C<-S: $hash_aPx_bPx_abPx ***
 
 // *** Client ***
