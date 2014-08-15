@@ -23,8 +23,12 @@ Note the client needs to check "b(1/k)P + (1/k)Q" is on the curve and in the sam
 ## Attacks
 An eavesdropper, malicious server, or malicious client can't obtain anything to be able to authenticate or crack the password. After obtaining the server's data, one can authenticate to/from a client and attempt to crack the password, but not authenticate to/from the server.
 
-## Plan
-I plan to have C++ and PHP code for both Curve25519 and Curve41417 done soon. Note this is currently PoC code (piece of crap code).
+## TODO
+* Use the fast formulas for scalar, (partial) point multiplication for Curve25519
+* Better functions for scalar, (full) point multiplication for Curve25519
+* Curve41417
+* Rewrite in C++
+* Get code production ready (ie not PoC code [piece of crap code])
 
 ## P and Q
 For Curve25519, P is (9, ...) and Q is (16, ...). I am only semi-sure P and Q are in the same cyclical group (ie aP = Q for some unknown a). If I picked Q as aP then with knowledge of a you can break this. P was picked by finding the lowest x coordinate that's on the curve and has a large prime cyclical group size. I picked Q by finding the next lowest x coordinate that's on the curve and has the same large prime cyclical group size as P. I ran some tests with adding and doubling combinations of P and Q to make sure those points all had the same large prime cyclical group size as P. I did this because I found twice as many points than I was expecting. I found that 1 in 8 random x or specific ranges are valid. ***So I may have picked a bad Q.***
