@@ -19,6 +19,16 @@
 	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+/**
+ * HKDF - HMAC-based key derivation function.
+ *
+ * @param string      $inputKeyingMaterial
+ * @param int         $keySize - Key size in bytes
+ * @param string      $info    - Default is ''
+ * @param string|null $salt    - Default is null
+ * @param string      $algo    - Default is 'sha256'
+ * @return string|null - On success string, otherwise null
+ */
 function hkdf($inputKeyingMaterial, $keySize, $info = '', $salt = null, $algo = 'sha256')
 {
 	$hmacSize = strlen(hash_hmac($algo, '', '')) / 2;
