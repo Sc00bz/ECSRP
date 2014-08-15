@@ -25,7 +25,7 @@ class Curve25519
 	 * 2^255 - 19
 	 *
 	 * @access private
-	 * @var resource (gmp)
+	 * @var GMP
 	 */
 	private static $p25519;
 
@@ -33,7 +33,7 @@ class Curve25519
 	 * Used to for modular exponentiation to calculate the modular inverse of 2^255 - 19. (2^255 - 19 - 2)
 	 *
 	 * @access private
-	 * @var resource (gmp)
+	 * @var GMP
 	 */
 	private static $p25519InvertPow;
 
@@ -41,7 +41,7 @@ class Curve25519
 	 * Used by sqrtMod25519() to calculate the modular square root. (2^252 - 2)
 	 *
 	 * @access private
-	 * @var resource (gmp)
+	 * @var GMP
 	 */
 	private static $n252M2;
 
@@ -49,7 +49,7 @@ class Curve25519
 	 * Used by sqrtMod25519() to calculate the modular square root.
 	 *
 	 * @access private
-	 * @var resource (gmp)
+	 * @var GMP
 	 */
 	private static $sqrtConst;
 
@@ -57,7 +57,7 @@ class Curve25519
 	 * The cyclical group's order.
 	 *
 	 * @access private
-	 * @var resource (gmp)
+	 * @var GMP
 	 */
 	private static $cyclicalGroupOrder;
 
@@ -65,7 +65,7 @@ class Curve25519
 	 * Used to for modular exponentiation to calculate the modular inverse of the cyclical group's order.
 	 *
 	 * @access private
-	 * @var resource (gmp)
+	 * @var GMP
 	 */
 	private static $cyclicalGroupOrderInvertPow;
 
@@ -73,7 +73,7 @@ class Curve25519
 	 * Used by initScalar() to get the scalar in the correct range.
 	 *
 	 * @access private
-	 * @var resource (gmp)
+	 * @var GMP
 	 */
 	private static $scalarMask;
 
@@ -151,7 +151,7 @@ class Curve25519
 	 *
 	 * @access private
 	 * @param GMP $n
-	 * @return GMP|false
+	 * @return GMP|false - On success GMP, otherwise false
 	 */
 	private static function sqrtMod25519($n)
 	{
@@ -172,7 +172,7 @@ class Curve25519
 	 *
 	 * @access private
 	 * @param GMP $x
-	 * @return GMP|false
+	 * @return GMP|false - On success GMP, otherwise false
 	 */
 	private static function getXFromY($x)
 	{
@@ -219,7 +219,7 @@ class Curve25519
 	 * @param GMP $pY
 	 * @param GMP $qX
 	 * @param GMP $qY
-	 * @return array(GMP $x, GMP $y)
+	 * @return array - An array of GMP (x, y)
 	 */
 	public static function addOutFull($pX, $pY, $qX, $qY)
 	{
@@ -247,7 +247,7 @@ class Curve25519
 	 * @access public
 	 * @param GMP $x
 	 * @param GMP $y
-	 * @return array(GMP $x, GMP $y)
+	 * @return array - An array of GMP (x, y)
 	 */
 	public static function doubleOutFull($x, $y)
 	{
@@ -343,7 +343,7 @@ class Curve25519
 	 * @param GMP $scalar
 	 * @param GMP $baseX
 	 * @param GMP $baseY
-	 * @return array(GMP $x, GMP $y)
+	 * @return array - An array of GMP (x, y)
 	 */
 	public static function scalarMultiplyOutFull($scalar, $baseX, $baseY)
 	{
@@ -412,7 +412,7 @@ class Curve25519
 	 * Returns the P point.
 	 *
 	 * @access public
-	 * @return array(GMP $x, GMP $y)
+	 * @return array - An array of GMP (x, y)
 	 */
 	public static function getP()
 	{
@@ -436,7 +436,7 @@ class Curve25519
 	 * Returns the Q point.
 	 *
 	 * @access public
-	 * @return array(GMP $x, GMP $y)
+	 * @return array - An array of GMP (x, y)
 	 */
 	public static function getQ()
 	{
