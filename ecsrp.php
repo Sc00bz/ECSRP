@@ -31,7 +31,7 @@ require_once('curve25519.php');
  * @param string $salt
  * @param string $curve
  * @param string $hardness
- * @return GMP|null
+ * @return GMP|null - On success GMP, otherwise null
  */
 function getScalarFromPassword($password, $salt, $curve, $hardness = '09')
 {
@@ -88,7 +88,7 @@ function getScalarFromPassword($password, $salt, $curve, $hardness = '09')
  * @param string $salt
  * @param string $curve
  * @param string $hardness
- * @return GMP|null
+ * @return GMP|null - On success GMP, otherwise null
  */
 function newPassword($password, $salt, $curve, $hardness = '09')
 {
