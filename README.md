@@ -9,10 +9,10 @@ ECSRP
 * X(P) returns the x coordinate of a point
 * || is concatenation
 ```
-C->S: X(aP)
-C<-S: b(1/k)P + (1/k)Q
+C->S: Identity
+C<-S: b(1/k)P + (1/k)Q, salt, password KDF settings
 C:    k(b(1/k)P + (1/k)Q) - Q = bP
-C->S: H(X(bP) || X(abP))
+C->S: X(aP), H(X(bP) || X(abP))
 S:    Verify
 C<-S: H(X(aP) || X(bP) || X(abP))
 C:    Verify
