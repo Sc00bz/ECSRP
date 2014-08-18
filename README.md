@@ -31,16 +31,16 @@ An eavesdropper, malicious server, or malicious client can't obtain anything to 
 * Get code production ready (ie not PoC code [piece of crap code])
 
 ## P and Q
-For Curve25519, P is (9, ...) and Q is (16, ...). I am only semi-sure P and Q are in the same cyclical group (ie aP = Q for some unknown a). If I picked Q as aP then with knowledge of a you can break this. P was picked by finding the lowest x coordinate that's on the curve and has a large prime cyclical group size. I picked Q by finding the next lowest x coordinate that's on the curve and has the same large prime cyclical group size as P. I ran some tests with adding and doubling combinations of P and Q to make sure those points all had the same large prime cyclical group size as P. I did this because I found twice as many points than I was expecting. I found that 1 in 8 random x or specific ranges are valid. ***So I may have picked a bad Q.***
-
-(2 ^ 255 - 19) / ((2 ^ 252 + 27742317777372353535851937790883648493 - 1) / 2) ≈ 16<br>
-1 in 16 x coordinates is in the same cyclical group as P, but I found 1,190 in the first 10,000 which is about 1 in 8.4. I tried random and other specific ranges and all are near 1 in 8. From this it appears that there are two cyclical groups of the same order and when you add two points they land in one of the cyclical groups.
+For Curve25519, P is (9, ...) and Q is (16, ...).
 
 ## I would like to hear from you
 * If you broke this
 * If you have an attack on this that is not mentioned above
-* If you can prove the Q I picked is correct, incorrect, or other
 * Something is incorrect
+
+## Thanks
+* Steven Alexander
+* Michael Hamburg
 
 ## License
 This code is distributed under the terms of the GNU General Public License 2.
