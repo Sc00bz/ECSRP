@@ -1,7 +1,11 @@
 ECSRP
 =====
-## Just use SPAKE2-EE
-I found out about SPAKE2-EE after coming up with this because I was told there isn't a good elliptic curve SPR. SPAKE2-EE was made by smart people and they have security proofs for SPAKE2-EE.
+## Just use SPAKE2-EE or PAKE2+
+I found out about SPAKE2-EE after coming up with this because I was told there isn't a good elliptic curve SPR. SPAKE2-EE was made by smart people and they have security proofs.
+
+Apparently the server-client mode of SPAKE2 is called PAKE2+, it's just an augmentation of SPAKE2. PAKE2+ can do a server-client connection where the server holds a password hash equivalent instead of a password equivalent like SPAKE2. Not sure if there's an official PAKE2+EE, but it's obvious given SPAKE2, PAKE2+, and SPAKE2-EE. PAKE2+ was made by smart people and they have security proofs.
+
+SPAKE2-EE is good for client-client connections but is bad for server-client connections. PAKE2+ is good for both but requires an extra step.
 
 ## Description
 * P and Q are points on the curve in the same cyclical group (ie aP = Q for some unknown a)
